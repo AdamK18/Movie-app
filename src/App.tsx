@@ -1,9 +1,14 @@
 import React from 'react';
+import Header from './components/Header'
+import Layout from './components/Layout';
+import './css/base.css'
+import './css/styles.css'
 
 function App() {
   return (
     <div className="App">
-    <p>ASD</p>
+      <Header/>
+      <Layout/>
     </div>
   );
 }
