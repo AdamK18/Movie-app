@@ -22,3 +22,23 @@ query fetchPopular {
     }
   }
   `;
+
+  export const FETCH_SEARCH_QUERY= `query SearchMovies {
+    searchMovies(query: "fight club") {
+      id
+      name
+      overview
+      releaseDate
+      cast {
+        id
+        person {
+          name
+        }
+        role {
+          ... on Cast {
+            character
+          }
+        }
+      }
+    }
+  }`

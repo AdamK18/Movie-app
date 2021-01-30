@@ -1,15 +1,25 @@
 .header {
   width: 100%;
-  height: 10%;
+  height: 5vw;
   background-color: #222831;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.8vw;
+  min-height: 50px;
 }
 
 .layout {
   width: 100%;
   height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.layout h1 {
+  margin: 35px 0 25px 0;
 }
 
 .spinner {
@@ -21,15 +31,24 @@
 
 .grid {
   width: 80% !important;
-  margin: 0 auto !important;
-  max-width: 1400px;
+  max-width: 1300px !important;
 }
 
 .grid__item {
   display: flex;
   justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.grid__title {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .grid__img {
   width: 100%;
+  margin-top: 10px;
 }
