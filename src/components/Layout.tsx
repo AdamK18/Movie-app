@@ -52,8 +52,8 @@ function Layout() {
             <h1>{searchText}</h1>
 
             <Grid className="grid" container spacing={4} alignItems="center" justify="center">
-                {data.map(movie => (
-                    <Grid className="grid__item" item xs={12} sm={6} md={4} lg={3}>
+                {data.map((movie, i) => (
+                    <Grid key={i} className="grid__item" item xs={12} sm={6} md={4} lg={3}>
                         <div className="grid__title">
                             <h3>{movie.name}</h3>
                         </div>
