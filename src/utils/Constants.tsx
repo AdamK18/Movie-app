@@ -3,45 +3,27 @@ export const GRAPHQL_API = "https://tmdb.sandbox.zoosh.ie/dev/graphql";
 export const FETCH_POPULAR_QUERY = `
 query fetchPopular {
     movies: popularMovies {
-      id
       name
-      overview
-      releaseDate
+      score
       img: poster {
         url: custom(size: "w185_and_h278_bestv2")
       }
-      reviews {
-        id
-        author
-        content
-        language {
-          code
-          name
-        }
-      }
+      similar{name, score, img: poster {
+        url: custom(size: "w185_and_h278_bestv2")
+      }}
     }
   }
   `;
 
   export const FETCH_SEARCH_QUERY= `query SearchMovies {
     searchMovies(query: "MovieName") {
-      id
       name
-      overview
+      score
       img: poster {
         url: custom(size: "w185_and_h278_bestv2")
       }
-      releaseDate
-      cast {
-        id
-        person {
-          name
-        }
-        role {
-          ... on Cast {
-            character
-          }
-        }
-      }
+      similar{name, score, img: poster {
+        url: custom(size: "w185_and_h278_bestv2")
+      }}
     }
   }`
