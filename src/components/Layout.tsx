@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import * as Constants from '../utils/Constants'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SearchBar from "material-ui-search-bar";
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios'
@@ -8,6 +9,7 @@ import axios from 'axios'
 function Layout() {
     const [data, setData] = useState<any[]>([])
     const [showSpinner, setShowSpinner] = useState(true);
+    const [input, setInput] = useState('');
 
     useEffect(() => {
         fetchData(false);
@@ -16,13 +18,14 @@ function Layout() {
     const fetchData = async (isSearch : boolean) => {
         let queryResult:any;
         if(isSearch){
+            setShowSpinner(true)
             queryResult = await axios.post(
                 Constants.GRAPHQL_API, {
-                    query: Constants.FETCH_SEARCH_QUERY
+                    query: Constants.FETCH_SEARCH_QUERY.replace('MovieName', input)
                 }
-            );
-            setShowSpinner(true)
-            console.log(data)
+            )
+            setShowSpinner(false)
+            setData(queryResult.data.data.searchMovies)
         }
         else{
             queryResult = await axios.post(
@@ -30,11 +33,9 @@ function Layout() {
                     query: Constants.FETCH_POPULAR_QUERY
                 }
             );
-            setShowSpinner(false);
+            setData(queryResult.data.data.movies)
+            setShowSpinner(false)
         }
-        const result = queryResult.data.data;
-        setData(result.movies)
-        console.log(data)
     }
     
     return (
@@ -43,7 +44,7 @@ function Layout() {
 
             <h2>Search for a movie</h2>
 
-            <SearchBar className="searchBar" onRequestSearch={() => fetchData(true)} placeholder="Interstellar" cancelOnEscape
+            <SearchBar onChange={(value) => setInput(value)} className="searchBar" onRequestSearch={() => fetchData(true)} placeholder="Interstellar" cancelOnEscape
             />
 
             <h1>Trending movies</h1>
@@ -54,7 +55,15 @@ function Layout() {
                         <div className="grid__title">
                             <h3>{movie.name}</h3>
                         </div>
-                        <img className="grid__img" src={movie.img.url} alt={movie.name}/>
+                        {movie.img === null ? ( 
+                            <div>
+                                <p>No image found</p>
+                                <SentimentVeryDissatisfiedIcon></SentimentVeryDissatisfiedIcon> 
+                            </div>
+                         ) : (
+                            <img className="grid__img" src={movie.img.url} alt={movie.name}/>
+                        )}
+                        
                     </Grid>
                 ))}
             </Grid>
