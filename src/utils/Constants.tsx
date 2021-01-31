@@ -24,10 +24,13 @@ query fetchPopular {
   `;
 
   export const FETCH_SEARCH_QUERY= `query SearchMovies {
-    searchMovies(query: "fight club") {
+    searchMovies(query: "MovieName") {
       id
       name
       overview
+      img: poster {
+        url: custom(size: "w185_and_h278_bestv2")
+      }
       releaseDate
       cast {
         id
