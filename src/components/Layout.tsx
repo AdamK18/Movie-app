@@ -12,24 +12,19 @@ function Layout() {
     const [showSpinner, setShowSpinner] = useState(true);
 
     useEffect(() => {
-        fetch(false);
+        updateMovies(false);
     }, []);
 
-    const fetch = (isSearch:boolean) => {
+    const updateMovies = (isSearch:boolean) => {
+        setShowSpinner(true);
         fetchData(isSearch, input).then((result: any) => {
             setShowSpinner(false);
             setData(result)
+            if(isSearch) setSearchText(`Search results for: ${input}`)
+            else setSearchText('Trending movies');
         }).catch(() => {
             alert('Error loading the movies');
         })
-    }
-
-    const updateMovies = (isSearch: boolean) => {
-        setShowSpinner(true);
-        fetch(isSearch);
-
-        if(isSearch) setSearchText(`Search results for: ${input}`)
-        else setSearchText('Trending movies');
     }
     
     return (
