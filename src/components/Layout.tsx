@@ -1,47 +1,32 @@
 import React, {useState, useEffect} from 'react'
-import * as Constants from '../utils/Constants'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios'
 import Card from './Card'
+import {fetchData} from '../utils/Loader';
 
 function Layout() {
     const [data, setData] = useState<any[]>([])
-    const [showSpinner, setShowSpinner] = useState(true);
     const [input, setInput] = useState('');
     const [searchText, setSearchText] = useState('Trending movies');
+    const [showSpinner, setShowSpinner] = useState(true);
 
     useEffect(() => {
-        fetchData(false);
+        fetch(false);
     }, []);
 
-    const fetchData = async (isSearch : boolean) => {
-        let queryResult:any;
-        if(isSearch){
-            setShowSpinner(true)
-            const query = Constants.FETCH_SEARCH_QUERY.replace('MovieName', input);
-            queryResult = await axios.post(
-                Constants.GRAPHQL_API, {
-                    query: query
-                }
-            )
-            setData(queryResult.data.data.searchMovies)
-        }
-        else{
-            setShowSpinner(true)
-            queryResult = await axios.post(
-                Constants.GRAPHQL_API, {
-                    query: Constants.FETCH_POPULAR_QUERY
-                }
-            );
-            setData(queryResult.data.data.movies)
-        }
-        setShowSpinner(false)
+    const fetch = (isSearch:boolean) => {
+        fetchData(isSearch, input).then((result: any) => {
+            setShowSpinner(false);
+            setData(result)
+        }).catch(() => {
+            alert('Error loading the movies');
+        })
     }
 
     const updateMovies = (isSearch: boolean) => {
-        fetchData(isSearch);
+        setShowSpinner(true);
+        fetch(isSearch);
 
         if(isSearch) setSearchText(`Search results for: ${input}`)
         else setSearchText('Trending movies');
@@ -55,8 +40,7 @@ function Layout() {
 
             <SearchBar onChange={(value) => setInput(value)}  className="searchBar" 
             onRequestSearch={() => updateMovies(true)} placeholder="Interstellar" 
-            onCancelSearch={() => updateMovies(false)} cancelOnEscape
-            />
+            onCancelSearch={() => updateMovies(false)} cancelOnEscape/>
 
             <h1>{searchText}</h1>
 
