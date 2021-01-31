@@ -20,13 +20,13 @@ function Layout() {
         let queryResult:any;
         if(isSearch){
             setShowSpinner(true)
+            const query = Constants.FETCH_SEARCH_QUERY.replace('MovieName', input);
             queryResult = await axios.post(
                 Constants.GRAPHQL_API, {
-                    query: Constants.FETCH_SEARCH_QUERY.replace('MovieName', input)
+                    query: query
                 }
             )
             setData(queryResult.data.data.searchMovies)
-            setSearchText(`Search results for: ${input}`)
         }
         else{
             setShowSpinner(true)
@@ -40,9 +40,11 @@ function Layout() {
         setShowSpinner(false)
     }
 
-    const reset = () => {
-        fetchData(false);
-        setSearchText('Trending movies');
+    const updateMovies = (isSearch: boolean) => {
+        fetchData(isSearch);
+
+        if(isSearch) setSearchText(`Search results for: ${input}`)
+        else setSearchText('Trending movies');
     }
     
     return (
@@ -52,8 +54,8 @@ function Layout() {
             <h2>Search for a movie</h2>
 
             <SearchBar onChange={(value) => setInput(value)}  className="searchBar" 
-            onRequestSearch={() => fetchData(true)} placeholder="Interstellar" 
-            onCancelSearch={() => reset()} cancelOnEscape
+            onRequestSearch={() => updateMovies(true)} placeholder="Interstellar" 
+            onCancelSearch={() => updateMovies(false)} cancelOnEscape
             />
 
             <h1>{searchText}</h1>
