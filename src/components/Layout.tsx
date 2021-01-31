@@ -10,6 +10,7 @@ function Layout() {
     const [data, setData] = useState<any[]>([])
     const [showSpinner, setShowSpinner] = useState(true);
     const [input, setInput] = useState('');
+    const [searchText, setSearchText] = useState('Trending movies');
 
     useEffect(() => {
         fetchData(false);
@@ -26,6 +27,7 @@ function Layout() {
             )
             setShowSpinner(false)
             setData(queryResult.data.data.searchMovies)
+            setSearchText(`Search results for: ${input}`)
         }
         else{
             queryResult = await axios.post(
@@ -47,7 +49,7 @@ function Layout() {
             <SearchBar onChange={(value) => setInput(value)} className="searchBar" onRequestSearch={() => fetchData(true)} placeholder="Interstellar" cancelOnEscape
             />
 
-            <h1>Trending movies</h1>
+            <h1>{searchText}</h1>
 
             <Grid className="grid" container spacing={4} alignItems="center" justify="center">
                 {data.map(movie => (
