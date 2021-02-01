@@ -1,9 +1,10 @@
 import React from 'react'
+import Grid from '@material-ui/core/Grid';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 
-function Card({movie} : any) {
+function Card({movie, getMovie} : any) {
     return (
-        <div >
+        <Grid onClick={() => getMovie(movie)} className="grid__item" item xs={12} sm={6} md={4} lg={3}>
             {movie.img === null ? ( 
             <div>
                 <p>No image found</p>
@@ -16,7 +17,7 @@ function Card({movie} : any) {
                 <h3>{movie.name}</h3>
                 <p>{movie.score}/10</p>
             </div>
-        </div>
+        </Grid>
     )
 }
 

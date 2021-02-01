@@ -20,11 +20,13 @@ function Layout() {
         updateMovies(operation.TRENDING,'');
     }, []);
 
-    const updateMovies = (op:number, input:string) => {
+    const updateMovies = (op:number, param:string) => {
         setShowSpinner(true);
-        operationPicker(op, input).then((result:any) => {
+        operationPicker(op, param).then((result:any) => {
             setData(result);
             setShowSpinner(false);
+            if(op == operation.SEARCH) setSearchText(`Search result for "${param}"`);
+            else setSearchText('Trending movies');
         });
     }
 
@@ -44,17 +46,15 @@ function Layout() {
 
             <h2>Search for a movie</h2>
 
-            <SearchBar onChange={(value) => setInput(value)}  className="searchBar" 
-            onRequestSearch={() => updateMovies(operation.SEARCH, input)} placeholder="Interstellar" 
-            onCancelSearch={() => updateMovies(operation.TRENDING, '')} cancelOnEscape/>
+            <SearchBar onChange={(value) => setInput(value)}  className="searchBar" placeholder="Interstellar" cancelOnEscape
+            onRequestSearch={() => updateMovies(input == '' ? operation.TRENDING : operation.SEARCH, input)} 
+            onCancelSearch={() => updateMovies(operation.TRENDING, '')} />
 
             <h1>{searchText}</h1>
 
             <Grid className="grid" container spacing={4} alignItems="center" justify="center">
                 {data.map((movie, i) => (
-                    <Grid onClick={() => getMovie(movie)} key={i} className="grid__item" item xs={12} sm={6} md={4} lg={3}>
-                        <Card movie={movie}/>
-                    </Grid>
+                    <Card movie={movie} getMovie={getMovie}/>
                 ))}
             </Grid>
 
