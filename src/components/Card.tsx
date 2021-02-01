@@ -1,12 +1,10 @@
 import React from 'react'
+import Grid from '@material-ui/core/Grid';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 
-function Card({movie} : any) {
+function Card({movie, getMovie} : any) {
     return (
-        <div >
-            <div className="grid__title">
-                <h3>{movie.name}</h3>
-            </div>
+        <Grid onClick={() => getMovie(movie)} className="grid__item" item xs={12} sm={6} md={4} lg={3}>
             {movie.img === null ? ( 
             <div>
                 <p>No image found</p>
@@ -15,7 +13,11 @@ function Card({movie} : any) {
             ) : (
             <img className="grid__img" src={movie.img.url} alt={movie.name}/>
             )}
-        </div>
+            <div className="grid__title">
+                <h3>{movie.name}</h3>
+                <p>{movie.score}/10</p>
+            </div>
+        </Grid>
     )
 }
 

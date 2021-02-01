@@ -1,35 +1,57 @@
 import React, {useState, useEffect} from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
+import {operation, operationPicker, getWiki} from '../utils/Loader';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 import Grid from '@material-ui/core/Grid';
 import Card from './Card'
-import {fetchData} from '../utils/Loader';
+import Modal from './Modal';
 
 function Layout() {
     const [data, setData] = useState<any[]>([])
     const [input, setInput] = useState('');
     const [searchText, setSearchText] = useState('Trending movies');
     const [showSpinner, setShowSpinner] = useState(true);
+    const [modalVisibility, setModalVisibility] = useState(false);
+    const [currentMovie, setCurrentMovie] = useState('');
 
     useEffect(() => {
-        fetch(false);
+        updateMovies(operation.TRENDING,'');
+        asd()
     }, []);
 
-    const fetch = (isSearch:boolean) => {
-        fetchData(isSearch, input).then((result: any) => {
+    const asd = async () => {
+        const resp = await fetch('/api/imdb/?q=foo');
+        const results = await resp.json().then((result:any) => {
+            console.log(result)
+        });
+    }
+
+    const updateMovies = (op:number, param:string) => {
+        setShowSpinner(true);
+        operationPicker(op, param).then((result:any) => {
+            setData(result);
             setShowSpinner(false);
-            setData(result)
-        }).catch(() => {
-            alert('Error loading the movies');
+            if(op == operation.SEARCH) setSearchText(`Search result for "${param}"`);
+            else setSearchText('Trending movies');
+        });
+    }
+
+    const getMovie = (movie:any) => {
+        setShowSpinner(true);
+        const movieWithUrl = movie;
+        getWiki(movie.name).then((data:any) => {
+            movieWithUrl.wiki = data[3][0];
+            setCurrentMovie(movieWithUrl);
+            setShowSpinner(false);
+            setModalVisibility(true);
         })
     }
 
-    const updateMovies = (isSearch: boolean) => {
-        setShowSpinner(true);
-        fetch(isSearch);
-
-        if(isSearch) setSearchText(`Search results for: ${input}`)
-        else setSearchText('Trending movies');
+    const findSimilar = (id:string) => {
+        setModalVisibility(false);
+        updateMovies(operation.SIMILAR, id);
     }
     
     return (
@@ -38,19 +60,21 @@ function Layout() {
 
             <h2>Search for a movie</h2>
 
-            <SearchBar onChange={(value) => setInput(value)}  className="searchBar" 
-            onRequestSearch={() => updateMovies(true)} placeholder="Interstellar" 
-            onCancelSearch={() => updateMovies(false)} cancelOnEscape/>
+            <SearchBar onChange={(value) => setInput(value)}  className="searchBar" placeholder="Interstellar" cancelOnEscape
+            onRequestSearch={() => updateMovies(input == '' ? operation.TRENDING : operation.SEARCH, input)} 
+            onCancelSearch={() => updateMovies(operation.TRENDING, '')} />
 
             <h1>{searchText}</h1>
 
             <Grid className="grid" container spacing={4} alignItems="center" justify="center">
                 {data.map((movie, i) => (
-                    <Grid key={i} className="grid__item" item xs={12} sm={6} md={4} lg={3}>
-                        <Card movie={movie}/>
-                    </Grid>
+                    <Card movie={movie} key={i} getMovie={getMovie}/>
                 ))}
             </Grid>
+
+            <Rodal visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
+                <Modal movie={currentMovie} findSimilar={findSimilar}/>
+            </Rodal>
         </div>
     )
 }
