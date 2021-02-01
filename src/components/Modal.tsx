@@ -9,7 +9,7 @@ function Modal({movie, findSimilar}:any) {
             <p>{movie.score}/10</p>
             <ButtonGroup size="large" variant="contained" color="primary" aria-label="contained primary button group">
                 <Button>Wikipedia</Button>
-                <Button onClick={() => findSimilar(movie)}>Similar movies</Button>
+                <Button onClick={() => findSimilar(movie.id)}>Similar movies</Button>
                 <Button>IMDB</Button>
             </ButtonGroup>
         </div>

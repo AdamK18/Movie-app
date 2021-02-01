@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
-import {fetchData} from '../utils/Loader';
+import {operation, operationPicker} from '../utils/Loader';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import Grid from '@material-ui/core/Grid';
@@ -17,19 +17,15 @@ function Layout() {
     const [currentMovie, setCurrentMovie] = useState('');
 
     useEffect(() => {
-        updateMovies(false);
+        updateMovies(operation.TRENDING,'');
     }, []);
 
-    const updateMovies = (isSearch:boolean) => {
+    const updateMovies = (op:number, input:string) => {
         setShowSpinner(true);
-        fetchData(isSearch, input).then((result: any) => {
+        operationPicker(op, input).then((result:any) => {
+            setData(result);
             setShowSpinner(false);
-            setData(result)
-            if(!isSearch || (isSearch && input == '')) setSearchText('Trending movies');
-            else setSearchText(`Search results for: ${input}`);
-        }).catch(() => {
-            alert('Error loading the movies');
-        })
+        });
     }
 
     const getMovie = (movie:any) => {
@@ -37,9 +33,9 @@ function Layout() {
         setModalVisibility(true);
     }
 
-    const findSimilar = (movie:any) => {
+    const findSimilar = (id:string) => {
         setModalVisibility(false);
-        setData(movie.similar);
+        updateMovies(operation.SIMILAR, id);
     }
     
     return (
@@ -49,8 +45,8 @@ function Layout() {
             <h2>Search for a movie</h2>
 
             <SearchBar onChange={(value) => setInput(value)}  className="searchBar" 
-            onRequestSearch={() => updateMovies(true)} placeholder="Interstellar" 
-            onCancelSearch={() => updateMovies(false)} cancelOnEscape/>
+            onRequestSearch={() => updateMovies(operation.SEARCH, input)} placeholder="Interstellar" 
+            onCancelSearch={() => updateMovies(operation.TRENDING, '')} cancelOnEscape/>
 
             <h1>{searchText}</h1>
 
