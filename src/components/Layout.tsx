@@ -1,15 +1,20 @@
 import React, {useState, useEffect} from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
+import {fetchData} from '../utils/Loader';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 import Grid from '@material-ui/core/Grid';
 import Card from './Card'
-import {fetchData} from '../utils/Loader';
+import Modal from './Modal';
 
 function Layout() {
     const [data, setData] = useState<any[]>([])
     const [input, setInput] = useState('');
     const [searchText, setSearchText] = useState('Trending movies');
     const [showSpinner, setShowSpinner] = useState(true);
+    const [modalVisibility, setModalVisibility] = useState(false);
+    const [currentMovie, setCurrentMovie] = useState('');
 
     useEffect(() => {
         updateMovies(false);
@@ -20,11 +25,21 @@ function Layout() {
         fetchData(isSearch, input).then((result: any) => {
             setShowSpinner(false);
             setData(result)
-            if(isSearch) setSearchText(`Search results for: ${input}`)
-            else setSearchText('Trending movies');
+            if(!isSearch || (isSearch && input == '')) setSearchText('Trending movies');
+            else setSearchText(`Search results for: ${input}`);
         }).catch(() => {
             alert('Error loading the movies');
         })
+    }
+
+    const getMovie = (movie:any) => {
+        setCurrentMovie(movie);
+        setModalVisibility(true);
+    }
+
+    const findSimilar = (movie:any) => {
+        setModalVisibility(false);
+        setData(movie.similar);
     }
     
     return (
@@ -41,11 +56,15 @@ function Layout() {
 
             <Grid className="grid" container spacing={4} alignItems="center" justify="center">
                 {data.map((movie, i) => (
-                    <Grid key={i} className="grid__item" item xs={12} sm={6} md={4} lg={3}>
+                    <Grid onClick={() => getMovie(movie)} key={i} className="grid__item" item xs={12} sm={6} md={4} lg={3}>
                         <Card movie={movie}/>
                     </Grid>
                 ))}
             </Grid>
+
+            <Rodal visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
+                <Modal movie={currentMovie} findSimilar={findSimilar}/>
+            </Rodal>
         </div>
     )
 }

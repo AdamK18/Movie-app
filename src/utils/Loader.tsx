@@ -2,17 +2,8 @@ import axios from 'axios'
 import * as Constants from '../utils/Constants'
 
 export const fetchData = (isSearch : boolean, input: string) => {
-    const promise = new Promise((resolve) => {
-        if(isSearch){
-            axios.post(
-                Constants.GRAPHQL_API, {
-                    query: Constants.FETCH_SEARCH_QUERY.replace('MovieName', input)
-                }
-            ).then((data) => {
-                resolve(data.data.data.searchMovies)
-            })
-        }
-        else{
+    return new Promise((resolve) => {
+        if(!isSearch || (isSearch && input == '')){
             axios.post(
                 Constants.GRAPHQL_API, {
                     query: Constants.FETCH_POPULAR_QUERY
@@ -21,6 +12,14 @@ export const fetchData = (isSearch : boolean, input: string) => {
                 resolve(data.data.data.movies)
             });
         }
+        else{
+            axios.post(
+                Constants.GRAPHQL_API, {
+                    query: Constants.FETCH_SEARCH_QUERY.replace('MovieName', input)
+                }
+            ).then((data) => {
+                resolve(data.data.data.searchMovies)
+            })
+        }
     })
-    return promise
 }

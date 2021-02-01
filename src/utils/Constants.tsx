@@ -3,6 +3,7 @@ export const GRAPHQL_API = "https://tmdb.sandbox.zoosh.ie/dev/graphql";
 export const FETCH_POPULAR_QUERY = `
 query fetchPopular {
     movies: popularMovies {
+      id
       name
       score
       img: poster {
@@ -17,6 +18,7 @@ query fetchPopular {
 
   export const FETCH_SEARCH_QUERY= `query SearchMovies {
     searchMovies(query: "MovieName") {
+      id
       name
       score
       img: poster {
