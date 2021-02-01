@@ -1,11 +1,11 @@
 import axios from 'axios'
-import * as Constants from './Queries'
+import * as Queries from './Queries'
 
 const fetchSearch = (input: string) => {
     return new Promise((resolve) => {
         axios.post(
-            Constants.GRAPHQL_API, {
-                query: Constants.FETCH_SEARCH_QUERY.replace('MovieName', input)
+            Queries.GRAPHQL_API, {
+                query: Queries.FETCH_SEARCH_QUERY.replace('MovieName', input)
             }
         ).then((data) => {
             resolve(data.data.data.searchMovies)
@@ -16,8 +16,8 @@ const fetchSearch = (input: string) => {
 const fetchTrending = () => {
     return new Promise((resolve) => {
         axios.post(
-            Constants.GRAPHQL_API, {
-                query: Constants.FETCH_POPULAR_QUERY
+            Queries.GRAPHQL_API, {
+                query: Queries.FETCH_POPULAR_QUERY
             }
         ).then((data) => {
             resolve(data.data.data.movies)
@@ -28,8 +28,8 @@ const fetchTrending = () => {
 const fetchSimilar = (id: string) => {
     return new Promise((resolve) => {
         axios.post(
-            Constants.GRAPHQL_API, {
-                query: Constants.FETCH_SIMILAR_QUERY.replace('movieID', id)
+            Queries.GRAPHQL_API, {
+                query: Queries.FETCH_SIMILAR_QUERY.replace('movieID', id)
             }
         ).then((data) => {
             resolve(data.data.data.movie.similar)
@@ -55,4 +55,14 @@ export const operationPicker = async(op: number, input: string) => {
             return fetchSimilar(input);
         }
     }
+}
+
+export const getWiki = async (name:string) => {
+    return fetch(Queries.WIKIPEDIA_SEARCH_QUERY.replace('MovieName',name)).then((result:any)=> {
+        return result.json()
+    })
+}
+
+export const getIMDB = () => {
+
 }

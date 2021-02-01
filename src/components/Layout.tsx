@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
-import {operation, operationPicker} from '../utils/Loader';
+import {operation, operationPicker, getWiki} from '../utils/Loader';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import Grid from '@material-ui/core/Grid';
@@ -18,7 +18,15 @@ function Layout() {
 
     useEffect(() => {
         updateMovies(operation.TRENDING,'');
+        asd()
     }, []);
+
+    const asd = async () => {
+        const resp = await fetch('/api/imdb/?q=foo');
+        const results = await resp.json().then((result:any) => {
+            console.log(result)
+        });
+    }
 
     const updateMovies = (op:number, param:string) => {
         setShowSpinner(true);
@@ -31,8 +39,14 @@ function Layout() {
     }
 
     const getMovie = (movie:any) => {
-        setCurrentMovie(movie);
-        setModalVisibility(true);
+        setShowSpinner(true);
+        const movieWithUrl = movie;
+        getWiki(movie.name).then((data:any) => {
+            movieWithUrl.wiki = data[3][0];
+            setCurrentMovie(movieWithUrl);
+            setShowSpinner(false);
+            setModalVisibility(true);
+        })
     }
 
     const findSimilar = (id:string) => {
@@ -54,7 +68,7 @@ function Layout() {
 
             <Grid className="grid" container spacing={4} alignItems="center" justify="center">
                 {data.map((movie, i) => (
-                    <Card movie={movie} getMovie={getMovie}/>
+                    <Card movie={movie} key={i} getMovie={getMovie}/>
                 ))}
             </Grid>
 
