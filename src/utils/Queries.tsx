@@ -37,4 +37,4 @@ query fetchPopular {
   //MovieName
   export const WIKIPEDIA_CONTENT_QUERY = "https://en.wikipedia.org/w/api.php?action=parse&page=MovieName&formatversion=1&format=json";
   //MovieName
-  export const IMDB_TITLE_QUERY = "http://www.omdbapi.com/?apikey=6262df66&t=MovieName"
+  export const IMDB_TITLE_QUERY = "https://www.omdbapi.com/?apikey=6262df66&t=MovieName"
