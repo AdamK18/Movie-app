@@ -11,7 +11,7 @@ function Modal({movie, findSimilar}:any) {
             <ButtonGroup size="large" variant="contained" color="primary" aria-label="contained primary button group">
                 <Button target="_blank" href={movie.wiki}>Wikipedia</Button>
                 <Button onClick={() => findSimilar(movie.id)}>Similar movies</Button>
-                <Button href="">IMDB</Button>
+                <Button target="_blank" href={`https://www.imdb.com/title/${movie.imdb}`}>IMDB</Button>
             </ButtonGroup>
         </div>
     )

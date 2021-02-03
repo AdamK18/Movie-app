@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
-import {operation, operationPicker, getWiki} from '../utils/Loader';
+import {operation, operationPicker, getWiki, getIMDB} from '../utils/Loader';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import Grid from '@material-ui/core/Grid';
@@ -18,15 +18,7 @@ function Layout() {
 
     useEffect(() => {
         updateMovies(operation.TRENDING,'');
-        asd()
     }, []);
-
-    const asd = async () => {
-        const resp = await fetch('/api/imdb/?q=foo');
-        const results = await resp.json().then((result:any) => {
-            console.log(result)
-        });
-    }
 
     const updateMovies = (op:number, param:string) => {
         setShowSpinner(true);
@@ -43,9 +35,12 @@ function Layout() {
         const movieWithUrl = movie;
         getWiki(movie.name).then((data:any) => {
             movieWithUrl.wiki = data[3][0];
+        })
+        getIMDB(movie.name).then((data:any) => {
+            movieWithUrl.imdb = data.imdbID;
             setCurrentMovie(movieWithUrl);
             setShowSpinner(false);
-            setModalVisibility(true);
+            setModalVisibility(true);  
         })
     }
 

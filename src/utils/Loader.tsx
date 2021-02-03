@@ -63,6 +63,12 @@ export const getWiki = async (name:string) => {
     })
 }
 
-export const getIMDB = () => {
-
+export const getIMDB = async (name:string) => {
+    return fetch(Queries.IMDB_TITLE_QUERY.replace('MovieName',name)).then((result:any)=> {
+        return result.json()
+    })
 }
+
+export const getLinks = Promise.all([getWiki, getIMDB]).then((result:any) => {
+    
+})
