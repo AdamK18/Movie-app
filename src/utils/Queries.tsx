@@ -26,6 +26,8 @@ query fetchPopular {
 
   export const FETCH_SIMILAR_QUERY = `query getMovie {
     movie(id: movieID) {
+        id
+        name
         similar{id, name, score, img: poster {
           url: custom(size: "w185_and_h278_bestv2")
         }}
@@ -33,6 +35,8 @@ query fetchPopular {
   }`
 
   //MovieName
-  export const WIKIPEDIA_SEARCH_QUERY = "https://en.wikipedia.org/w/api.php?&origin=*&action=opensearch&search=MovieName&limit=1";
+  export const WIKIPEDIA_SEARCH_QUERY = "https://en.wikipedia.org/api/rest_v1/page/summary/MovieName?redirect=false";
   //MovieName
   export const WIKIPEDIA_CONTENT_QUERY = "https://en.wikipedia.org/w/api.php?action=parse&page=MovieName&formatversion=1&format=json";
+  //MovieName
+  export const IMDB_TITLE_QUERY = "https://www.omdbapi.com/?apikey=6262df66&t=MovieName"

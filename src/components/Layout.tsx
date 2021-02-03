@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
-import {operation, operationPicker, getWiki} from '../utils/Loader';
+import {operation, operationPicker} from '../utils/Loader';
 import Rodal from 'rodal';
+import Button from '@material-ui/core/Button';
 import 'rodal/lib/rodal.css';
 import Grid from '@material-ui/core/Grid';
 import Card from './Card'
@@ -14,44 +15,30 @@ function Layout() {
     const [searchText, setSearchText] = useState('Trending movies');
     const [showSpinner, setShowSpinner] = useState(true);
     const [modalVisibility, setModalVisibility] = useState(false);
-    const [currentMovie, setCurrentMovie] = useState('');
+    const [currentMovie, setCurrentMovie] = useState({});
 
     useEffect(() => {
         updateMovies(operation.TRENDING,'');
-        asd()
     }, []);
 
-    const asd = async () => {
-        const resp = await fetch('/api/imdb/?q=foo');
-        const results = await resp.json().then((result:any) => {
-            console.log(result)
-        });
-    }
-
     const updateMovies = (op:number, param:string) => {
+        setModalVisibility(false);
         setShowSpinner(true);
-        operationPicker(op, param).then((result:any) => {
-            setData(result);
+        operationPicker(op, param).then((data:any) => {
+            return data;
+        }).then((data:any) => {
+            setData(data);
             setShowSpinner(false);
-            if(op == operation.SEARCH) setSearchText(`Search result for "${param}"`);
+            if(data.length === 0) setSearchText("No movies found");
+            else if(op === operation.SEARCH) setSearchText(`Search result for ${param}`);
+            else if(op === operation.SIMILAR) setSearchText("Similar movies");
             else setSearchText('Trending movies');
         });
     }
 
     const getMovie = (movie:any) => {
-        setShowSpinner(true);
-        const movieWithUrl = movie;
-        getWiki(movie.name).then((data:any) => {
-            movieWithUrl.wiki = data[3][0];
-            setCurrentMovie(movieWithUrl);
-            setShowSpinner(false);
-            setModalVisibility(true);
-        })
-    }
-
-    const findSimilar = (id:string) => {
-        setModalVisibility(false);
-        updateMovies(operation.SIMILAR, id);
+        setCurrentMovie(movie);
+        setModalVisibility(true);
     }
     
     return (
@@ -61,7 +48,7 @@ function Layout() {
             <h2>Search for a movie</h2>
 
             <SearchBar onChange={(value) => setInput(value)}  className="searchBar" placeholder="Interstellar" cancelOnEscape
-            onRequestSearch={() => updateMovies(input == '' ? operation.TRENDING : operation.SEARCH, input)} 
+            onRequestSearch={() => updateMovies(input === '' ? operation.TRENDING : operation.SEARCH, input)} 
             onCancelSearch={() => updateMovies(operation.TRENDING, '')} />
 
             <h1>{searchText}</h1>
@@ -72,9 +59,15 @@ function Layout() {
                 ))}
             </Grid>
 
-            <Rodal visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
-                <Modal movie={currentMovie} findSimilar={findSimilar}/>
-            </Rodal>
+            {data.length === 0 ? (
+                <Button onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD</Button>
+            ) : ''}
+
+            {modalVisibility ? (
+                <Rodal visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
+                    <Modal currentMovie={currentMovie} findSimilar={updateMovies}/>
+                </Rodal>
+            ) : ''}
         </div>
     )
 }

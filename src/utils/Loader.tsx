@@ -44,25 +44,39 @@ export enum operation{
   }
 
 export const operationPicker = async(op: number, input: string) => {
+    const readableInput = input.replaceAll(" ", "_").trim();
     switch(op){
         case operation.SEARCH:{
-            return fetchSearch(input);
+            return fetchSearch(readableInput);
         }
         case operation.TRENDING:{
             return fetchTrending();
         }
         default :{
-            return fetchSimilar(input);
+            return fetchSimilar(readableInput);
         }
     }
 }
 
-export const getWiki = async (name:string) => {
-    return fetch(Queries.WIKIPEDIA_SEARCH_QUERY.replace('MovieName',name)).then((result:any)=> {
-        return result.json()
-    })
-}
+export const getLinks = (name:string) => {
+    const readableName = name.replaceAll(" ", "_").trim();
+    const IMDB_url = Queries.IMDB_TITLE_QUERY.replace('MovieName',readableName)
+    const WIKI_url = Queries.WIKIPEDIA_SEARCH_QUERY.replace('MovieName',readableName)
 
-export const getIMDB = () => {
-
+    return Promise.all([
+        new Promise((resolve,reject) => {
+            fetch(IMDB_url).then((result:any)=> {
+                return result.json();
+            }).then((result:any) => {
+                resolve(result)
+            })
+        }),
+        new Promise((resolve,reject) => {
+            fetch(WIKI_url).then((result:any)=> {
+                return result.json();
+            }).then((result:any) => {
+                resolve(result)
+            })
+        })
+    ])
 }
