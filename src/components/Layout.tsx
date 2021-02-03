@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
-import {operation, operationPicker, getWiki, getIMDB} from '../utils/Loader';
+import {operation, operationPicker, getLinks} from '../utils/Loader';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import Grid from '@material-ui/core/Grid';
@@ -21,6 +21,7 @@ function Layout() {
     }, []);
 
     const updateMovies = (op:number, param:string) => {
+        setModalVisibility(false);
         setShowSpinner(true);
         operationPicker(op, param).then((result:any) => {
             setData(result);
@@ -31,22 +32,12 @@ function Layout() {
     }
 
     const getMovie = (movie:any) => {
-        setShowSpinner(true);
-        const movieWithUrl = movie;
-        getWiki(movie.name).then((data:any) => {
-            movieWithUrl.wiki = data[3][0];
-        })
-        getIMDB(movie.name).then((data:any) => {
-            movieWithUrl.imdb = data.imdbID;
-            setCurrentMovie(movieWithUrl);
-            setShowSpinner(false);
+        getLinks(movie.name).then((data: any) => {
+            movie.wiki = data[1][3][0];
+            movie.imdb = data[0].imdbID;
+            setCurrentMovie(movie);
             setModalVisibility(true);  
         })
-    }
-
-    const findSimilar = (id:string) => {
-        setModalVisibility(false);
-        updateMovies(operation.SIMILAR, id);
     }
     
     return (
@@ -68,7 +59,7 @@ function Layout() {
             </Grid>
 
             <Rodal visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
-                <Modal movie={currentMovie} findSimilar={findSimilar}/>
+                <Modal movie={currentMovie} findSimilar={updateMovies}/>
             </Rodal>
         </div>
     )

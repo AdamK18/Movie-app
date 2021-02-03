@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import {operation} from '../utils/Loader';
 
 function Modal({movie, findSimilar}:any) {
 
@@ -10,7 +11,7 @@ function Modal({movie, findSimilar}:any) {
             <p>{movie.score}/10</p>
             <ButtonGroup size="large" variant="contained" color="primary" aria-label="contained primary button group">
                 <Button target="_blank" href={movie.wiki}>Wikipedia</Button>
-                <Button onClick={() => findSimilar(movie.id)}>Similar movies</Button>
+                <Button onClick={() => findSimilar(operation.SIMILAR, movie.id)}>Similar movies</Button>
                 <Button target="_blank" href={`https://www.imdb.com/title/${movie.imdb}`}>IMDB</Button>
             </ButtonGroup>
         </div>

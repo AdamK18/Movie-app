@@ -57,18 +57,24 @@ export const operationPicker = async(op: number, input: string) => {
     }
 }
 
-export const getWiki = async (name:string) => {
-    return fetch(Queries.WIKIPEDIA_SEARCH_QUERY.replace('MovieName',name)).then((result:any)=> {
-        return result.json()
-    })
-}
+export const getLinks = (name:string) => {
+    const IMDB_url = Queries.IMDB_TITLE_QUERY.replace('MovieName',name)
+    const WIKI_url = Queries.WIKIPEDIA_SEARCH_QUERY.replace('MovieName',name)
 
-export const getIMDB = async (name:string) => {
-    return fetch(Queries.IMDB_TITLE_QUERY.replace('MovieName',name)).then((result:any)=> {
-        return result.json()
-    })
+    return Promise.all([
+        new Promise((resolve,reject) => {
+            fetch(IMDB_url).then((result:any)=> {
+                return result.json();
+            }).then((result:any) => {
+                resolve(result)
+            })
+        }),
+        new Promise((resolve,reject) => {
+            fetch(WIKI_url).then((result:any)=> {
+                return result.json();
+            }).then((result:any) => {
+                resolve(result)
+            })
+        })
+    ])
 }
-
-export const getLinks = Promise.all([getWiki, getIMDB]).then((result:any) => {
-    
-})
