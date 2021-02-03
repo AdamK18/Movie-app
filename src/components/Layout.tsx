@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchBar from "material-ui-search-bar";
-import {operation, operationPicker, getLinks} from '../utils/Loader';
+import {operation, operationPicker} from '../utils/Loader';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import Grid from '@material-ui/core/Grid';
@@ -14,7 +14,7 @@ function Layout() {
     const [searchText, setSearchText] = useState('Trending movies');
     const [showSpinner, setShowSpinner] = useState(true);
     const [modalVisibility, setModalVisibility] = useState(false);
-    const [currentMovie, setCurrentMovie] = useState('');
+    const [currentMovie, setCurrentMovie] = useState({});
 
     useEffect(() => {
         updateMovies(operation.TRENDING,'');
@@ -26,18 +26,14 @@ function Layout() {
         operationPicker(op, param).then((result:any) => {
             setData(result);
             setShowSpinner(false);
-            if(op == operation.SEARCH) setSearchText(`Search result for "${param}"`);
+            if(op === operation.SEARCH) setSearchText(`Search result for "${param}"`);
             else setSearchText('Trending movies');
         });
     }
 
     const getMovie = (movie:any) => {
-        getLinks(movie.name).then((data: any) => {
-            movie.wiki = data[1][3][0];
-            movie.imdb = data[0].imdbID;
-            setCurrentMovie(movie);
-            setModalVisibility(true);  
-        })
+        setCurrentMovie(movie);
+        setModalVisibility(true);
     }
     
     return (
@@ -47,7 +43,7 @@ function Layout() {
             <h2>Search for a movie</h2>
 
             <SearchBar onChange={(value) => setInput(value)}  className="searchBar" placeholder="Interstellar" cancelOnEscape
-            onRequestSearch={() => updateMovies(input == '' ? operation.TRENDING : operation.SEARCH, input)} 
+            onRequestSearch={() => updateMovies(input === '' ? operation.TRENDING : operation.SEARCH, input)} 
             onCancelSearch={() => updateMovies(operation.TRENDING, '')} />
 
             <h1>{searchText}</h1>
