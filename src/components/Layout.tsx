@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 
 function Layout() {
     const [movies, setMovies] = useState<any[]>([])
-    const [inputText, setUserInputText] = useState('Trending movies');
+    const [searchTitleText, setSearchTitleText] = useState('Trending movies');
     const [spinnerVisibility, setSpinnerVisibility] = useState(true);
     const [modalVisibility, setModalVisibility] = useState(false);
     const [currentMovie, setCurrentMovie] = useState({name:''});
@@ -22,16 +22,21 @@ function Layout() {
     const updateMovies = (op:number, param:string) => {
         setModalVisibility(false);
         setSpinnerVisibility(true);
+
         operationPicker(op, param).then((response:any) => {
             return response;
         }).then((response:any) => {
             setMovies(response);
-            setSpinnerVisibility(false);
-            if(response.length === 0) setUserInputText("No movies found");
-            else if(op === operation.SEARCH) setUserInputText(`Search result for ${param}`);
-            else if(op === operation.SIMILAR) setUserInputText("Similar movies");
-            else setUserInputText('Trending movies');
+            updateTitles(op, param, response.length);
         });
+    }
+
+    const updateTitles = (op:number, param:string, responseLength:number) => {
+        setSpinnerVisibility(false);
+        if(responseLength === 0) setSearchTitleText("No movies found");
+        else if(op === operation.SEARCH) setSearchTitleText(`Search result for ${param}`);
+        else if(op === operation.SIMILAR) setSearchTitleText("Similar movies");
+        else setSearchTitleText('Trending movies');
     }
 
     const getMovie = (movie:any) => {
@@ -43,7 +48,7 @@ function Layout() {
         <div className="layout">
             <CircularProgress style={{display: spinnerVisibility ? 'block' : 'none' }} className="spinner"/>
 
-            <Search updateMovies={updateMovies} inputText={inputText}/>
+            <Search updateMovies={updateMovies} inputText={searchTitleText}/>
             
             <MovieDisplay movies={movies} getMovie={getMovie}/>
 
