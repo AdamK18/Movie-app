@@ -1,19 +1,23 @@
 import React, {useState, useEffect} from 'react'
-import CircularProgress from '@material-ui/core/CircularProgress';
-import SearchBar from "material-ui-search-bar";
-import {operation, operationPicker} from '../utils/Loader';
-import Rodal from 'rodal';
-import Button from '@material-ui/core/Button';
-import 'rodal/lib/rodal.css';
-import Grid from '@material-ui/core/Grid';
 import Card from './Card'
 import Modal from './Modal';
 
+import {operation, operationPicker} from '../utils/Loader';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import SearchBar from "material-ui-search-bar";
+
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
+
+
 function Layout() {
-    const [data, setData] = useState<any[]>([])
+    const [movies, setMovies] = useState<any[]>([])
     const [input, setInput] = useState('');
-    const [searchText, setSearchText] = useState('Trending movies');
-    const [showSpinner, setShowSpinner] = useState(true);
+    const [inputText, setInputText] = useState('Trending movies');
+    const [spinnerVisibility, setSpinnerVisibility] = useState(true);
     const [modalVisibility, setModalVisibility] = useState(false);
     const [currentMovie, setCurrentMovie] = useState({});
 
@@ -23,16 +27,16 @@ function Layout() {
 
     const updateMovies = (op:number, param:string) => {
         setModalVisibility(false);
-        setShowSpinner(true);
-        operationPicker(op, param).then((data:any) => {
-            return data;
-        }).then((data:any) => {
-            setData(data);
-            setShowSpinner(false);
-            if(data.length === 0) setSearchText("No movies found");
-            else if(op === operation.SEARCH) setSearchText(`Search result for ${param}`);
-            else if(op === operation.SIMILAR) setSearchText("Similar movies");
-            else setSearchText('Trending movies');
+        setSpinnerVisibility(true);
+        operationPicker(op, param).then((response:any) => {
+            return response;
+        }).then((response:any) => {
+            setMovies(response);
+            setSpinnerVisibility(false);
+            if(response.length === 0) setInputText("No movies found");
+            else if(op === operation.SEARCH) setInputText(`Search result for ${param}`);
+            else if(op === operation.SIMILAR) setInputText("Similar movies");
+            else setInputText('Trending movies');
         });
     }
 
@@ -43,7 +47,7 @@ function Layout() {
     
     return (
         <div className="layout">
-            <CircularProgress style={{display: showSpinner ? 'block' : 'none' }} className="spinner"/>
+            <CircularProgress style={{display: spinnerVisibility ? 'block' : 'none' }} className="spinner"/>
 
             <h2>Search for a movie</h2>
 
@@ -51,15 +55,15 @@ function Layout() {
             onRequestSearch={() => updateMovies(input === '' ? operation.TRENDING : operation.SEARCH, input)} 
             onCancelSearch={() => updateMovies(operation.TRENDING, '')} />
 
-            <h1>{searchText}</h1>
+            <h1>{inputText}</h1>
 
             <Grid className="grid" container spacing={4} alignItems="center" justify="center">
-                {data.map((movie, i) => (
+                {movies.map((movie, i) => (
                     <Card movie={movie} key={i} getMovie={getMovie}/>
                 ))}
             </Grid>
 
-            {data.length === 0 ? (
+            {movies.length === 0 ? (
                 <Button onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD</Button>
             ) : ''}
 
