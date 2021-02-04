@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import Card from './Card'
 import Modal from './Modal';
 import Search from './Search'
+import MovieDisplay from './MovieDisplay'
 
 import {operation, operationPicker} from '../utils/Loader';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
@@ -49,12 +48,8 @@ function Layout() {
             <CircularProgress style={{display: spinnerVisibility ? 'block' : 'none' }} className="spinner"/>
 
             <Search updateMovies={updateMovies} inputText={inputText}/>
-
-            <Grid className="grid" container spacing={4} alignItems="center" justify="center">
-                {movies.map((movie, i) => (
-                    <Card movie={movie} key={i} getMovie={getMovie}/>
-                ))}
-            </Grid>
+            
+            <MovieDisplay movies={movies} getMovie={getMovie}/>
 
             {movies.length === 0 ? (
                 <Button onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD</Button>
