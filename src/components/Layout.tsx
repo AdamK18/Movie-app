@@ -8,16 +8,12 @@ import {operation, operationPicker} from '../utils/Loader';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
-import Rodal from 'rodal';
-import 'rodal/lib/rodal.css';
-
-
 function Layout() {
     const [movies, setMovies] = useState<any[]>([])
     const [inputText, setUserInputText] = useState('Trending movies');
     const [spinnerVisibility, setSpinnerVisibility] = useState(true);
     const [modalVisibility, setModalVisibility] = useState(false);
-    const [currentMovie, setCurrentMovie] = useState({});
+    const [currentMovie, setCurrentMovie] = useState({name:''});
 
     useEffect(() => {
         updateMovies(operation.TRENDING,'');
@@ -55,12 +51,8 @@ function Layout() {
                     onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD
             </Button>
             
-
-            {modalVisibility ? (
-                <Rodal visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
-                    <Modal currentMovie={currentMovie} findSimilar={updateMovies}/>
-                </Rodal>
-            ) : ''}
+            <Modal modalVisibility={modalVisibility} setModalVisibility={setModalVisibility} 
+            currentMovie={currentMovie} findSimilar={updateMovies}/>
         </div>
     )
 }
