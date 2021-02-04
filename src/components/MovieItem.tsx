@@ -1,8 +1,10 @@
 import React from 'react'
+
 import Grid from '@material-ui/core/Grid';
+
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 
-function Card({movie, getMovie} : any) {
+function MovieItem({movie, getMovie} : any) {
     return (
         <Grid onClick={() => getMovie(movie)} className="grid__item" item xs={12} sm={6} md={4} lg={3}>
             {movie.img === null ? ( 
@@ -21,4 +23,4 @@ function Card({movie, getMovie} : any) {
     )
 }
 
-export default Card
+export default MovieItem

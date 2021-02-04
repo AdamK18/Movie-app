@@ -1,21 +1,19 @@
 import React, {useState, useEffect} from 'react'
-import CircularProgress from '@material-ui/core/CircularProgress';
-import SearchBar from "material-ui-search-bar";
-import {operation, operationPicker} from '../utils/Loader';
-import Rodal from 'rodal';
-import Button from '@material-ui/core/Button';
-import 'rodal/lib/rodal.css';
-import Grid from '@material-ui/core/Grid';
-import Card from './Card'
 import Modal from './Modal';
+import Search from './Search'
+import MovieDisplay from './MovieDisplay'
+
+import {operation, operationPicker} from '../utils/Loader';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
 
 function Layout() {
-    const [data, setData] = useState<any[]>([])
-    const [input, setInput] = useState('');
-    const [searchText, setSearchText] = useState('Trending movies');
-    const [showSpinner, setShowSpinner] = useState(true);
+    const [movies, setMovies] = useState<any[]>([])
+    const [searchTitleText, setSearchTitleText] = useState('Trending movies');
+    const [spinnerVisibility, setSpinnerVisibility] = useState(true);
     const [modalVisibility, setModalVisibility] = useState(false);
-    const [currentMovie, setCurrentMovie] = useState({});
+    const [currentMovie, setCurrentMovie] = useState({name:''});
 
     useEffect(() => {
         updateMovies(operation.TRENDING,'');
@@ -23,17 +21,22 @@ function Layout() {
 
     const updateMovies = (op:number, param:string) => {
         setModalVisibility(false);
-        setShowSpinner(true);
-        operationPicker(op, param).then((data:any) => {
-            return data;
-        }).then((data:any) => {
-            setData(data);
-            setShowSpinner(false);
-            if(data.length === 0) setSearchText("No movies found");
-            else if(op === operation.SEARCH) setSearchText(`Search result for ${param}`);
-            else if(op === operation.SIMILAR) setSearchText("Similar movies");
-            else setSearchText('Trending movies');
+        setSpinnerVisibility(true);
+
+        operationPicker(op, param).then((response:any) => {
+            return response;
+        }).then((response:any) => {
+            setMovies(response);
+            updateTitles(op, param, response.length);
         });
+    }
+
+    const updateTitles = (op:number, param:string, responseLength:number) => {
+        setSpinnerVisibility(false);
+        if(responseLength === 0) setSearchTitleText("No movies found");
+        else if(op === operation.SEARCH) setSearchTitleText(`Search result for ${param}`);
+        else if(op === operation.SIMILAR) setSearchTitleText("Similar movies");
+        else setSearchTitleText('Trending movies');
     }
 
     const getMovie = (movie:any) => {
@@ -43,31 +46,18 @@ function Layout() {
     
     return (
         <div className="layout">
-            <CircularProgress style={{display: showSpinner ? 'block' : 'none' }} className="spinner"/>
+            <CircularProgress style={{display: spinnerVisibility ? 'block' : 'none' }} className="spinner"/>
 
-            <h2>Search for a movie</h2>
+            <Search updateMovies={updateMovies} inputText={searchTitleText}/>
+            
+            <MovieDisplay movies={movies} getMovie={getMovie}/>
 
-            <SearchBar onChange={(value) => setInput(value)}  className="searchBar" placeholder="Interstellar" cancelOnEscape
-            onRequestSearch={() => updateMovies(input === '' ? operation.TRENDING : operation.SEARCH, input)} 
-            onCancelSearch={() => updateMovies(operation.TRENDING, '')} />
-
-            <h1>{searchText}</h1>
-
-            <Grid className="grid" container spacing={4} alignItems="center" justify="center">
-                {data.map((movie, i) => (
-                    <Card movie={movie} key={i} getMovie={getMovie}/>
-                ))}
-            </Grid>
-
-            {data.length === 0 ? (
-                <Button onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD</Button>
-            ) : ''}
-
-            {modalVisibility ? (
-                <Rodal visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
-                    <Modal currentMovie={currentMovie} findSimilar={updateMovies}/>
-                </Rodal>
-            ) : ''}
+            <Button style={{display: movies.length > 0 ? "none" : 'block'}} 
+                    onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD
+            </Button>
+            
+            <Modal modalVisibility={modalVisibility} setModalVisibility={setModalVisibility} 
+            currentMovie={currentMovie} findSimilar={updateMovies}/>
         </div>
     )
 }

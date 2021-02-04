@@ -1,13 +1,19 @@
 import React, {useState,useEffect} from 'react'
-import Button from '@material-ui/core/Button';
 import {operation, getLinks} from '../utils/Loader';
+
+import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-function Modal({currentMovie, findSimilar}:any) {
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
+
+function Modal({currentMovie, findSimilar, modalVisibility, setModalVisibility}:any) {
     const [movieContent, setMovieContent] = useState({wiki: "", imdb: "", extract: ""});
 
     useEffect(() => {
+        if(currentMovie.name==='') return
+
         getLinks(currentMovie.name).then((data:any) => {
             const content = {wiki: data[1].content_urls.desktop.page, extract:data[1].extract, imdb: data[0].imdbID}
             setMovieContent(content);
@@ -19,22 +25,25 @@ function Modal({currentMovie, findSimilar}:any) {
 
     let disableWiki = movieContent.wiki === "";
     let disableImdb = movieContent.imdb === "";
+    const imdbBaseUrl = "https://www.imdb.com/title/"
 
     return (
-        <div className="modal-content">
+        <Rodal className="modal-content" visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
             <h1>{currentMovie.name}</h1>
             <p>{currentMovie.score}/10</p>
+
             <ButtonGroup size="large" variant="contained" color="primary" aria-label="contained primary button group">
                 <Button target="_blank" href={movieContent.wiki} disabled={disableWiki}>Wikipedia</Button>
                 <Button onClick={() => findSimilar(operation.SIMILAR, currentMovie.id)}>Similar movies</Button>
-                <Button target="_blank" href={`https://www.imdb.com/title/${movieContent.imdb}`} disabled={disableImdb}>IMDB</Button>
+                <Button target="_blank" href={imdbBaseUrl + movieContent.imdb} disabled={disableImdb}>IMDB</Button>
             </ButtonGroup>
+
             {movieContent.extract === "" ? (
                 <CircularProgress/>
             ) : (
                 <p>{movieContent.extract}</p>
             )}
-        </div>
+        </Rodal>
     )
 }
 
