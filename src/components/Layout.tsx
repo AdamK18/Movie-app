@@ -51,9 +51,10 @@ function Layout() {
             
             <MovieDisplay movies={movies} getMovie={getMovie}/>
 
-            {movies.length === 0 ? (
-                <Button onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD</Button>
-            ) : ''}
+            <Button style={{display: movies.length > 0 ? "none" : 'block'}} 
+                    onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD
+            </Button>
+            
 
             {modalVisibility ? (
                 <Rodal visible={modalVisibility} onClose={() => setModalVisibility(false)} closeOnEsc>
