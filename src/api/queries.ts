@@ -9,10 +9,10 @@ query fetchPopular {
       }
     }
   }
-`
+`;
 
-export const FETCH_SEARCH_QUERY = (movieName:string) =>  {
-  return `query SearchMovies {
+export const FETCH_SEARCH_QUERY = (movieName: string) => {
+	return `query SearchMovies {
     searchMovies(query: "${movieName}") {
       id
       name
@@ -22,10 +22,11 @@ export const FETCH_SEARCH_QUERY = (movieName:string) =>  {
       }
     }
   }
-`}
+`;
+};
 
-export const FETCH_SIMILAR_QUERY = (movieName:string) => {
-  return `query getMovie {
+export const FETCH_SIMILAR_QUERY = (movieName: string) => {
+	return `query getMovie {
     movie(id: ${movieName}) {
         id
         name
@@ -34,4 +35,5 @@ export const FETCH_SIMILAR_QUERY = (movieName:string) => {
         }}
     }
   }
-`}
+`;
+};

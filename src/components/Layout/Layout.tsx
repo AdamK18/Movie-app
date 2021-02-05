@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '../Modal';
-import { Search } from '../Search';
 import { MovieDisplay } from '../Movie';
+import { Header } from '../Header';
 import './layout.css';
 
 import { operation, operationPicker } from '../../api/Loader';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
 
 const Layout = () => {
 	const [movies, setMovies] = useState<any[]>([]);
@@ -23,7 +22,6 @@ const Layout = () => {
 	const updateMovies = (op: number, param: string) => {
 		setModalVisibility(false);
 		setSpinnerVisibility(true);
-
 		operationPicker(op, param)
 			.then((response: any) => {
 				return response;
@@ -50,21 +48,11 @@ const Layout = () => {
 
 	return (
 		<div className="layout">
-			<CircularProgress
-				style={{ display: spinnerVisibility ? 'block' : 'none' }}
-				className="spinner"
-			/>
+			<Header updateMovies={updateMovies} inputText={searchTitleText} />
 
-			<Search updateMovies={updateMovies} inputText={searchTitleText} />
+			<h1 className="search-title">{searchTitleText}</h1>
 
 			<MovieDisplay movies={movies} getMovie={getMovie} />
-
-			<Button
-				style={{ display: movies.length > 0 ? 'none' : 'block' }}
-				onClick={() => updateMovies(operation.TRENDING, '')}
-			>
-				RELOAD
-			</Button>
 
 			{modalVisibility && (
 				<Modal
@@ -74,6 +62,11 @@ const Layout = () => {
 					findSimilar={updateMovies}
 				/>
 			)}
+
+			<CircularProgress
+				style={{ display: spinnerVisibility ? 'block' : 'none' }}
+				className="spinner"
+			/>
 		</div>
 	);
 };

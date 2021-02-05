@@ -1,3 +1,21 @@
 .search-title {
 	text-align: center;
 }
+
+.searchBar {
+	width: 40vw;
+	max-width: 600px;
+	height: 100% !important;
+	background-color: transparent !important;
+	background-color: #3c454a !important;
+}
+
+.ForwardRef-searchContainer-7 {
+	display: flex !important;
+	text-align: center !important;
+}
+
+.MuiInput-input,
+.MuiInputBase-root {
+	color: #e8e8e8 !important;
+}

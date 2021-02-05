@@ -1,10 +1,43 @@
 .header {
 	width: 100%;
 	height: 5vw;
-	background-color: #222831;
+	max-height: 80px;
+	/*background-color: #ff4150;*/
+	background-color: #f23443;
 	display: flex;
 	align-items: center;
-	justify-content: center;
 	font-size: 1.8vw;
+	/*
+	Fluid typography:   
+	font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
+	*/
+	font-size: calc(10px + (26 - 10) * ((100vw - 300px) / (1920 - 300)));
 	min-height: 50px;
+	position: relative;
+}
+
+.header__text {
+	position: absolute;
+	width: 35%;
+	min-width: 60px;
+	left: 5%;
+	cursor: pointer;
+}
+
+.header__search-container {
+	position: absolute;
+	display: flex;
+	justify-content: flex-end;
+	right: 5%;
+	width: 65%;
+	height: 80%;
+	max-height: 50px;
+}
+
+.header__reload-btn {
+	margin-right: 15px !important;
+	background-color: #3c454a !important;
+	font-size: 1vw !important;
+	min-width: 30px !important;
+	min-height: 15px !important;
 }
