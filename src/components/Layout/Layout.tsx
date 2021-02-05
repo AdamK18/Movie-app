@@ -10,10 +10,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Layout = () => {
 	const [movies, setMovies] = useState<any[]>([]);
-	const [searchTitleText, setSearchTitleText] = useState('Trending movies');
-	const [spinnerVisibility, setSpinnerVisibility] = useState(true);
-	const [modalVisibility, setModalVisibility] = useState(false);
-	const [currentMovie, setCurrentMovie] = useState({ name: '' });
+	const [searchTitleText, setSearchTitleText] = useState<string>(
+		'Trending movies'
+	);
+	const [spinnerVisibility, setSpinnerVisibility] = useState<boolean>(true);
+	const [modalVisibility, setModalVisibility] = useState<boolean>(false);
+	const [currentMovie, setCurrentMovie] = useState<object>({ name: '' });
 
 	useEffect(() => {
 		updateMovies(operation.TRENDING, '');
@@ -63,10 +65,11 @@ const Layout = () => {
 				/>
 			)}
 
-			<CircularProgress
-				style={{ display: spinnerVisibility ? 'block' : 'none' }}
-				className="spinner"
-			/>
+			<div className="spinner-container">
+				<CircularProgress
+					style={{ display: spinnerVisibility ? 'block' : 'none' }}
+				/>
+			</div>
 		</div>
 	);
 };
