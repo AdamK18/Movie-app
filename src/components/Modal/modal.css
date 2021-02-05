@@ -3,7 +3,7 @@
 	height: 60vh !important;
 	max-width: 1000px;
 	max-height: 800px;
-	min-width: 250px;
+	min-width: 300px;
 	background-color: #222831;
 }
 
@@ -116,6 +116,6 @@
 @media screen and (max-width: 400px) {
 	.rodal-dialog {
 		width: 100vw !important;
-		height: 100vh !important;
+		height: 95vh !important;
 	}
 }
