@@ -1,26 +1,11 @@
-.header__search-container {
+.searchBar {
 	position: absolute;
-	display: flex;
-	justify-content: flex-end;
+	width: 45vw !important;
 	right: 5%;
 	width: 65%;
-	height: 80%;
-	max-height: 50px;
-}
-
-.header__reload-btn {
-	margin-right: 15px !important;
-	background-color: #3c454a !important;
-	font-size: 1vw !important;
-	min-width: 30px !important;
-	min-height: 15px !important;
-}
-
-.searchBar {
-	width: 40vw;
+	height: 80% !important;
 	max-width: 600px;
-	height: 100% !important;
-	background-color: transparent !important;
+	max-height: 40px;
 	background-color: #3c454a !important;
 }
 

@@ -2,7 +2,6 @@
 	width: 100%;
 	height: 5vw;
 	max-height: 80px;
-	/*background-color: #ff4150;*/
 	background-color: #f23443;
 	display: flex;
 	align-items: center;
@@ -18,7 +17,8 @@
 
 .header__text {
 	position: absolute;
-	width: 35%;
+	width: 40%;
 	min-width: 60px;
 	left: 5%;
+	cursor: pointer;
 }
