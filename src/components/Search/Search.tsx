@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 
 import SearchBar from "material-ui-search-bar";
+import './search.css'
 
-import {operation} from '../../utils/Loader';
+import {operation} from '../../api/Loader';
 
 const Search = ({updateMovies, inputText}:any) => {
     const [userInput, setUserInput] = useState('');

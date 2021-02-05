@@ -4,7 +4,7 @@ import {Search} from '../Search'
 import {MovieDisplay} from '../Movie'
 import './layout.css'
 
-import {operation, operationPicker} from '../../utils/Loader';
+import {operation, operationPicker} from '../../api/Loader';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';

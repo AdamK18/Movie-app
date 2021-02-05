@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import {operation, getLinks} from '../../utils/Loader';
+import {operation, getLinks} from '../../api/Loader';
 
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
