@@ -56,9 +56,11 @@ const Layout = () => {
             <Button style={{display: movies.length > 0 ? "none" : 'block'}} 
                     onClick={() => updateMovies(operation.TRENDING, '')}>RELOAD
             </Button>
-            
-            <Modal modalVisibility={modalVisibility} setModalVisibility={setModalVisibility} 
-            currentMovie={currentMovie} findSimilar={updateMovies}/>
+
+            {modalVisibility && (
+                <Modal modalVisibility={modalVisibility} setModalVisibility={setModalVisibility} 
+                currentMovie={currentMovie} findSimilar={updateMovies}/>
+            )}
         </div>
     )
 }

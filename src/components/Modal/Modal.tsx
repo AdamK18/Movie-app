@@ -13,8 +13,6 @@ const Modal  = ({currentMovie, findSimilar, modalVisibility, setModalVisibility}
     const [movieContent, setMovieContent] = useState({wiki: "", imdb: "", extract: ""});
 
     useEffect(() => {
-        if(currentMovie.name==='') return
-
         getLinks(currentMovie.name).then((data:any) => {
             const content = {wiki: data[1].content_urls.desktop.page, extract:data[1].extract, imdb: data[0].imdbID}
             setMovieContent(content);
@@ -39,11 +37,13 @@ const Modal  = ({currentMovie, findSimilar, modalVisibility, setModalVisibility}
                 <Button target="_blank" href={imdbBaseUrl + movieContent.imdb} disabled={disableImdb}>IMDB</Button>
             </ButtonGroup>
 
-            {movieContent.extract === "" ? (
-                <CircularProgress/>
-            ) : (
-                <p>{movieContent.extract}</p>
-            )}
+            <div>
+                {movieContent.extract === "" ? (
+                    <CircularProgress/>
+                ) : (
+                    <p>{movieContent.extract}</p>
+                )}
+            </div>
         </Rodal>
     )
 }
