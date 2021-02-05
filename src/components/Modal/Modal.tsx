@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import {operation, getLinks} from '../utils/Loader';
+import {operation, getLinks} from '../../utils/Loader';
 
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -7,8 +7,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
+import './modal.css'
 
-function Modal({currentMovie, findSimilar, modalVisibility, setModalVisibility}:any) {
+const Modal  = ({currentMovie, findSimilar, modalVisibility, setModalVisibility}:any) => {
     const [movieContent, setMovieContent] = useState({wiki: "", imdb: "", extract: ""});
 
     useEffect(() => {

@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import Modal from './Modal';
-import Search from './Search'
-import MovieDisplay from './MovieDisplay'
+import {Modal} from '../Modal';
+import {Search} from '../Search'
+import {MovieDisplay} from '../Movie'
+import './layout.css'
 
-import {operation, operationPicker} from '../utils/Loader';
+import {operation, operationPicker} from '../../utils/Loader';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
-function Layout() {
+const Layout = () => {
     const [movies, setMovies] = useState<any[]>([])
     const [searchTitleText, setSearchTitleText] = useState('Trending movies');
     const [spinnerVisibility, setSpinnerVisibility] = useState(true);

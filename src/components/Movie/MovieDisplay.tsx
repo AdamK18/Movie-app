@@ -1,10 +1,11 @@
 import React from 'react'
 
-import MovieItem from './MovieItem'
+import MovieItem from './movieItem/MovieItem'
+import './movie.css'
 
 import Grid from '@material-ui/core/Grid';
 
-function MovieDisplay({movies, getMovie}:any) {
+const MovieDisplay = ({movies, getMovie}:any) => {
     return (
         <Grid className="grid" container spacing={4} alignItems="center" justify="center">
             {movies.map((movie:any, i:number) => (

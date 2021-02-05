@@ -1,6 +1,7 @@
 import React from 'react'
+import './header.css'
 
-function Header() {
+const Header = () => {
     return (
         <div className="header">
             <h1>Movie Picker</h1>
