@@ -14,3 +14,7 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
+
+.layout__title {
+	margin-bottom: 1em;
+}

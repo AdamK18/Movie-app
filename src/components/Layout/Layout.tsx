@@ -48,9 +48,9 @@ const Layout = () => {
 
 	return (
 		<div className="layout">
-			<Header updateMovies={updateMovies} inputText={searchTitleText} />
+			<Header updateMovies={updateMovies} />
 
-			<h1 className="search-title">{searchTitleText}</h1>
+			<h1 className="layout__title">{searchTitleText}</h1>
 
 			<MovieDisplay movies={movies} getMovie={getMovie} />
 

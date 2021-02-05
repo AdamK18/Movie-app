@@ -4,6 +4,7 @@ query fetchPopular {
       id
       name
       score
+      tagline
       img: poster {
         url: custom(size: "w185_and_h278_bestv2")
       }
@@ -17,6 +18,7 @@ export const FETCH_SEARCH_QUERY = (movieName: string) => {
       id
       name
       score
+      tagline
       img: poster {
         url: custom(size: "w185_and_h278_bestv2")
       }
@@ -30,7 +32,7 @@ export const FETCH_SIMILAR_QUERY = (movieName: string) => {
     movie(id: ${movieName}) {
         id
         name
-        similar{id, name, score, img: poster {
+        similar{id, name, score, tagline, img: poster {
           url: custom(size: "w185_and_h278_bestv2")
         }}
     }
