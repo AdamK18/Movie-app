@@ -9,12 +9,8 @@
 	background-color: #3c454a !important;
 }
 
-.ForwardRef-searchContainer-7 {
-	display: flex !important;
-	text-align: center !important;
-}
-
-.MuiInput-input,
+.MuiInputBase-input,
 .MuiInputBase-root {
 	color: #e8e8e8 !important;
+	position: absolute !important;
 }
