@@ -4,6 +4,7 @@ import { operation, getLinks } from '../../api/Loader';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
@@ -53,7 +54,14 @@ const Modal = ({
 			closeOnEsc
 		>
 			<div className="modal__content">
-				{<img className="modal__img" src={currentMovie.img.url} alt="" />}
+				{currentMovie.img === null ? (
+					<div>
+						<p>No image found</p>
+						<SentimentVeryDissatisfiedIcon></SentimentVeryDissatisfiedIcon>
+					</div>
+				) : (
+					<img className="modal__img" src={currentMovie.img.url} alt="" />
+				)}
 				<div className="modal__text">
 					<h1>{currentMovie.name}</h1>
 					<p>{currentMovie.tagline}</p>

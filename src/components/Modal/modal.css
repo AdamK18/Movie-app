@@ -63,6 +63,12 @@
 	border-radius: 4px !important;
 }
 
+.Mui-disabled {
+	color: rgba(0, 0, 0, 0.26) !important;
+	box-shadow: none;
+	background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
 .modal__img--mobile {
 	display: none;
 }
