@@ -7,11 +7,6 @@
 	display: flex;
 	align-items: center;
 	font-size: 1.8vw;
-	/*
-	Fluid typography:   
-	font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
-	*/
-	font-size: calc(10px + (26 - 10) * ((100vw - 300px) / (1920 - 300)));
 	min-height: 50px;
 	position: relative;
 }
@@ -22,4 +17,11 @@
 	min-width: 60px;
 	left: 5%;
 	cursor: pointer;
+	margin: 0;
+	font-weight: bold;
+	/*
+	Fluid typography:   
+	font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
+	*/
+	font-size: calc(16px + (40 - 16) * ((100vw - 300px) / (1600 - 300)));
 }

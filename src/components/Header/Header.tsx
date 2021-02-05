@@ -8,14 +8,14 @@ import { Search } from '../Search';
 const Header = ({ updateMovies }: any) => {
 	return (
 		<div className="header">
-			<h1
+			<span
 				onClick={() => {
 					updateMovies(operation.TRENDING, '');
 				}}
 				className="header__text"
 			>
 				Movie Picker
-			</h1>
+			</span>
 
 			<Search updateMovies={updateMovies} />
 		</div>
