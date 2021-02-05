@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
 
 import SearchBar from 'material-ui-search-bar';
+import ReplayIcon from '@material-ui/icons/Replay';
+import Button from '@material-ui/core/Button';
+
 import './search.css';
 
 import { operation } from '../../api/Loader';
 
-const Search = ({ updateMovies, inputText }: any) => {
+const Search = ({ updateMovies }: any) => {
 	const [userInput, setUserInput] = useState('');
 
 	return (
-		<div>
-			<h2 className="search-title">Search for a movie</h2>
+		<div className="header__search-container">
+			<Button
+				className="header__reload-btn"
+				onClick={() => {
+					setUserInput('');
+					updateMovies(operation.TRENDING, '');
+				}}
+			>
+				<ReplayIcon />
+			</Button>
 
 			<SearchBar
+				value={userInput}
 				onChange={(value) => setUserInput(value)}
 				className="searchBar"
 				placeholder="Interstellar"
@@ -25,8 +37,6 @@ const Search = ({ updateMovies, inputText }: any) => {
 				}
 				onCancelSearch={() => updateMovies(operation.TRENDING, '')}
 			/>
-
-			<h1 className="search-title">{inputText}</h1>
 		</div>
 	);
 };

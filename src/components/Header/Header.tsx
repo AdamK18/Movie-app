@@ -1,10 +1,16 @@
 import React from 'react';
+
 import './header.css';
 
-const Header = () => {
+import { Search } from '../Search';
+import { operation } from '../../api/Loader';
+
+const Header = ({ updateMovies }: any) => {
 	return (
 		<div className="header">
-			<h1>Movie Picker</h1>
+			<h1 className="header__text">Movie Picker</h1>
+
+			<Search updateMovies={updateMovies} />
 		</div>
 	);
 };

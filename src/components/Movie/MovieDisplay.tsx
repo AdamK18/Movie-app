@@ -10,7 +10,7 @@ const MovieDisplay = ({ movies, getMovie }: any) => {
 		<Grid
 			className="grid"
 			container
-			spacing={4}
+			spacing={6}
 			alignItems="center"
 			justify="center"
 		>

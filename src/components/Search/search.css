@@ -1,3 +1,35 @@
-.search-title {
-	text-align: center;
+.header__search-container {
+	position: absolute;
+	display: flex;
+	justify-content: flex-end;
+	right: 5%;
+	width: 65%;
+	height: 80%;
+	max-height: 50px;
+}
+
+.header__reload-btn {
+	margin-right: 15px !important;
+	background-color: #3c454a !important;
+	font-size: 1vw !important;
+	min-width: 30px !important;
+	min-height: 15px !important;
+}
+
+.searchBar {
+	width: 40vw;
+	max-width: 600px;
+	height: 100% !important;
+	background-color: transparent !important;
+	background-color: #3c454a !important;
+}
+
+.ForwardRef-searchContainer-7 {
+	display: flex !important;
+	text-align: center !important;
+}
+
+.MuiInput-input,
+.MuiInputBase-root {
+	color: #e8e8e8 !important;
 }
