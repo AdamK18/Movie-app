@@ -3,7 +3,6 @@ import React from 'react';
 import './header.css';
 
 import { Search } from '../Search';
-import { operation } from '../../api/Loader';
 
 const Header = ({ updateMovies }: any) => {
 	return (
