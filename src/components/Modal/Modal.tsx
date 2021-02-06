@@ -10,7 +10,7 @@ import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import './modal.css';
 
-const Modal = ({ currentMovie, findSimilar, modalVisibility, setModalVisibility }: any) => {
+const Modal = ({ currentMovie, updateMovies, modalVisibility, setModalVisibility }: any) => {
 	const [movieContent, setMovieContent] = useState({
 		wiki: '',
 		imdb: '',
@@ -55,7 +55,7 @@ const Modal = ({ currentMovie, findSimilar, modalVisibility, setModalVisibility 
 				<Button className="modal__button" target="_blank" href={movieContent.wiki} disabled={!movieContent.wiki}>
 					Wikipedia
 				</Button>
-				<Button className="modal__button" onClick={() => findSimilar(operation.SIMILAR, currentMovie.id)}>
+				<Button className="modal__button" onClick={() => updateMovies(operation.SIMILAR, currentMovie.id, currentMovie.name)}>
 					Similar movies
 				</Button>
 				<Button className="modal__button" target="_blank" href={imdbBaseUrl + movieContent.imdb} disabled={!movieContent.imdb}>

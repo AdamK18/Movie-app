@@ -16,27 +16,27 @@ const Layout = () => {
 	const [currentMovie, setCurrentMovie] = useState<object>({ name: '' });
 
 	useEffect(() => {
-		updateMovies(operation.TRENDING, '');
+		updateMovies(operation.TRENDING, '', '');
 	}, []);
 
-	const updateMovies = (op: number, param: string) => {
+	const updateMovies = (op: number, id: string, name: string) => {
 		setModalVisibility(false);
 		setSpinnerVisibility(true);
-		operationPicker(op, param)
+		operationPicker(op, id)
 			.then((response: any) => {
 				return response;
 			})
 			.then((response: any) => {
 				setMovies(response);
-				updateTitles(op, param, response.length);
+				updateTitles(op, name, response.length);
 			});
 	};
 
-	const updateTitles = (op: number, param: string, responseLength: number) => {
+	const updateTitles = (op: number, name: string, responseLength: number) => {
 		setSpinnerVisibility(false);
 		if (responseLength === 0) setSearchTitleText('No movies found');
-		else if (op === operation.SEARCH) setSearchTitleText(`Search result for ${param}`);
-		else if (op === operation.SIMILAR) setSearchTitleText('Similar movies');
+		else if (op === operation.SEARCH) setSearchTitleText(`Search result for ${name}`);
+		else if (op === operation.SIMILAR) setSearchTitleText(`Similar movies like ${name}`);
 		else setSearchTitleText('Trending movies');
 	};
 
@@ -51,10 +51,12 @@ const Layout = () => {
 
 			<h1 className="layout__title">{searchTitleText}</h1>
 
+			{}
+
 			<MovieDisplay movies={movies} getMovie={getMovie} />
 
 			{modalVisibility && (
-				<Modal modalVisibility={modalVisibility} setModalVisibility={setModalVisibility} currentMovie={currentMovie} findSimilar={updateMovies} />
+				<Modal modalVisibility={modalVisibility} setModalVisibility={setModalVisibility} currentMovie={currentMovie} updateMovies={updateMovies} />
 			)}
 
 			<div className="spinner-container">
