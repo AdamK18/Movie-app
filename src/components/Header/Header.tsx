@@ -10,7 +10,7 @@ const Header = ({ updateMovies }: any) => {
 		<div className="header">
 			<span
 				onClick={() => {
-					updateMovies(operation.TRENDING, '');
+					updateMovies(operation.TRENDING, '', '');
 				}}
 				className="header__text"
 			>

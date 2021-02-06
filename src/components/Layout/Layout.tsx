@@ -10,36 +10,32 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Layout = () => {
 	const [movies, setMovies] = useState<any[]>([]);
-	const [searchTitleText, setSearchTitleText] = useState<string>(
-		'Trending movies'
-	);
+	const [searchTitleText, setSearchTitleText] = useState<string>('Trending movies');
 	const [spinnerVisibility, setSpinnerVisibility] = useState<boolean>(true);
 	const [modalVisibility, setModalVisibility] = useState<boolean>(false);
 	const [currentMovie, setCurrentMovie] = useState<object>({ name: '' });
 
 	useEffect(() => {
-		updateMovies(operation.TRENDING, '');
+		updateMovies(operation.TRENDING, '', '');
 	}, []);
 
-	const updateMovies = (op: number, param: string) => {
+	const updateMovies = (op: number, id: string, name: string) => {
 		setModalVisibility(false);
 		setSpinnerVisibility(true);
-		operationPicker(op, param)
+		operationPicker(op, id)
 			.then((response: any) => {
 				return response;
 			})
 			.then((response: any) => {
 				setMovies(response);
-				updateTitles(op, param, response.length);
+				updateTitles(op, name, response.length);
 			});
 	};
 
-	const updateTitles = (op: number, param: string, responseLength: number) => {
+	const updateTitles = (op: number, name: string, responseLength: number) => {
 		setSpinnerVisibility(false);
-		if (responseLength === 0) setSearchTitleText('No movies found');
-		else if (op === operation.SEARCH)
-			setSearchTitleText(`Search result for ${param}`);
-		else if (op === operation.SIMILAR) setSearchTitleText('Similar movies');
+		if (op === operation.SEARCH) setSearchTitleText(`Search result for ${name}`);
+		else if (op === operation.SIMILAR) setSearchTitleText(`Similar movies like ${name}`);
 		else setSearchTitleText('Trending movies');
 	};
 
@@ -54,21 +50,16 @@ const Layout = () => {
 
 			<h1 className="layout__title">{searchTitleText}</h1>
 
+			{!movies.length && !spinnerVisibility && 'No movies found'}
+
 			<MovieDisplay movies={movies} getMovie={getMovie} />
 
 			{modalVisibility && (
-				<Modal
-					modalVisibility={modalVisibility}
-					setModalVisibility={setModalVisibility}
-					currentMovie={currentMovie}
-					findSimilar={updateMovies}
-				/>
+				<Modal modalVisibility={modalVisibility} setModalVisibility={setModalVisibility} currentMovie={currentMovie} updateMovies={updateMovies} />
 			)}
 
 			<div className="spinner-container">
-				<CircularProgress
-					style={{ display: spinnerVisibility ? 'block' : 'none' }}
-				/>
+				<CircularProgress style={{ display: spinnerVisibility ? 'block' : 'none' }} />
 			</div>
 		</div>
 	);
