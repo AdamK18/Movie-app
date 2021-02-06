@@ -60,9 +60,13 @@ const fetchSimilar = (id: string) => {
 };
 
 export const getLinks = (name: string) => {
-	const readableName = name.replaceAll(' ', '_').replaceAll(/[^\w\s]/gi, '').trim();
+	const readableName = name
+		.replaceAll(' ', '_')
+		.replaceAll(/[^,:'.!?\w\s]/gi, '')
+		.trim();
+		console.log(readableName)
 	const IMDB_url: string = URL.IMDB_TITLE_QUERY(readableName);
-	const WIKI_url:string = URL.WIKIPEDIA_SEARCH_QUERY(readableName);
+	const WIKI_url: string = URL.WIKIPEDIA_SEARCH_QUERY(readableName);
 
 	return Promise.all([
 		new Promise((resolve) => {
@@ -71,7 +75,7 @@ export const getLinks = (name: string) => {
 					return response.json();
 				})
 				.then((response: any) => {
-					resolve(response)
+					resolve(response);
 				});
 		}),
 		new Promise((resolve) => {
@@ -80,7 +84,7 @@ export const getLinks = (name: string) => {
 					return response.json();
 				})
 				.then((response: any) => {
-					resolve(response)
+					resolve(response);
 				});
 		}),
 	]);

@@ -10,9 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Layout = () => {
 	const [movies, setMovies] = useState<any[]>([]);
-	const [searchTitleText, setSearchTitleText] = useState<string>(
-		'Trending movies'
-	);
+	const [searchTitleText, setSearchTitleText] = useState<string>('Trending movies');
 	const [spinnerVisibility, setSpinnerVisibility] = useState<boolean>(true);
 	const [modalVisibility, setModalVisibility] = useState<boolean>(false);
 	const [currentMovie, setCurrentMovie] = useState<object>({ name: '' });
@@ -37,8 +35,7 @@ const Layout = () => {
 	const updateTitles = (op: number, param: string, responseLength: number) => {
 		setSpinnerVisibility(false);
 		if (responseLength === 0) setSearchTitleText('No movies found');
-		else if (op === operation.SEARCH)
-			setSearchTitleText(`Search result for ${param}`);
+		else if (op === operation.SEARCH) setSearchTitleText(`Search result for ${param}`);
 		else if (op === operation.SIMILAR) setSearchTitleText('Similar movies');
 		else setSearchTitleText('Trending movies');
 	};
@@ -57,18 +54,11 @@ const Layout = () => {
 			<MovieDisplay movies={movies} getMovie={getMovie} />
 
 			{modalVisibility && (
-				<Modal
-					modalVisibility={modalVisibility}
-					setModalVisibility={setModalVisibility}
-					currentMovie={currentMovie}
-					findSimilar={updateMovies}
-				/>
+				<Modal modalVisibility={modalVisibility} setModalVisibility={setModalVisibility} currentMovie={currentMovie} findSimilar={updateMovies} />
 			)}
 
 			<div className="spinner-container">
-				<CircularProgress
-					style={{ display: spinnerVisibility ? 'block' : 'none' }}
-				/>
+				<CircularProgress style={{ display: spinnerVisibility ? 'block' : 'none' }} />
 			</div>
 		</div>
 	);
