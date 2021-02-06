@@ -17,7 +17,6 @@ const Search = ({ updateMovies }: any) => {
 			placeholder="Interstellar"
 			cancelOnEscape
 			onRequestSearch={() => updateMovies(!userInput ? operation.TRENDING : operation.SEARCH, userInput, userInput)}
-			onCancelSearch={() => updateMovies(operation.TRENDING, '', '')}
 		/>
 	);
 };
