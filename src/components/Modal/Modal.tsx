@@ -23,27 +23,18 @@ const Modal = ({
 	});
 
 	useEffect(() => {
-		getLinks(currentMovie.name)
-			.then((data: any) => {
-				const content = {
-					wiki: data[1].content_urls.desktop.page,
-					extract: data[1].extract,
-					imdb: data[0].imdbID,
-				};
-				setMovieContent(content);
-			})
-			.catch((data: any) => {
-				const content = {
-					wiki: '',
-					extract: 'Error loading movie details',
-					imdb: '',
-				};
-				setMovieContent(content);
-			});
+		getLinks(currentMovie.name).then((data: any) => {
+			const content = {
+				imdb: !data[0].imdbID ? '' : data[0].imdbID,
+				wiki: !data[1].content_urls ? '' : data[1].content_urls.desktop.page,
+				extract: !data[1].extract
+					? 'Wikipedia page not found'
+					: data[1].extract,
+			};
+			setMovieContent(content);
+		});
 	}, [currentMovie]);
 
-	let disableWiki = movieContent.wiki === '';
-	let disableImdb = movieContent.imdb === '';
 	const imdbBaseUrl = 'https://www.imdb.com/title/';
 
 	return (
@@ -54,7 +45,7 @@ const Modal = ({
 			closeOnEsc
 		>
 			<div className="modal__content">
-				{currentMovie.img === null ? (
+				{!currentMovie.img ? (
 					<div>
 						<p>No image found</p>
 						<SentimentVeryDissatisfiedIcon></SentimentVeryDissatisfiedIcon>
@@ -67,7 +58,7 @@ const Modal = ({
 					<p>{currentMovie.tagline}</p>
 					<p>{currentMovie.score}/10</p>
 					<div className="modal__extract">
-						{movieContent.extract === '' ? (
+						{!movieContent.extract ? (
 							<CircularProgress />
 						) : (
 							<p>{movieContent.extract}</p>
@@ -77,7 +68,7 @@ const Modal = ({
 			</div>
 
 			<div className="modal__extract--mobile">
-				{movieContent.extract === '' ? (
+				{!movieContent.extract ? (
 					<CircularProgress />
 				) : (
 					<p>{movieContent.extract}</p>
@@ -95,7 +86,7 @@ const Modal = ({
 					className="modal__button"
 					target="_blank"
 					href={movieContent.wiki}
-					disabled={disableWiki}
+					disabled={!movieContent.wiki}
 				>
 					Wikipedia
 				</Button>
@@ -109,7 +100,7 @@ const Modal = ({
 					className="modal__button"
 					target="_blank"
 					href={imdbBaseUrl + movieContent.imdb}
-					disabled={disableImdb}
+					disabled={!movieContent.imdb}
 				>
 					IMDB
 				</Button>

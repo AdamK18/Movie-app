@@ -60,27 +60,27 @@ const fetchSimilar = (id: string) => {
 };
 
 export const getLinks = (name: string) => {
-	const readableName = name.replaceAll(' ', '_').trim();
+	const readableName = name.replaceAll(' ', '_').replaceAll(/[^\w\s]/gi, '').trim();
 	const IMDB_url: string = URL.IMDB_TITLE_QUERY(readableName);
-	const WIKI_url = URL.WIKIPEDIA_SEARCH_QUERY(readableName);
+	const WIKI_url:string = URL.WIKIPEDIA_SEARCH_QUERY(readableName);
 
 	return Promise.all([
-		new Promise((resolve, reject) => {
+		new Promise((resolve) => {
 			fetch(IMDB_url)
-				.then((result: any) => {
-					return result.json();
+				.then((response: any) => {
+					return response.json();
 				})
-				.then((result: any) => {
-					resolve(result);
+				.then((response: any) => {
+					resolve(response)
 				});
 		}),
-		new Promise((resolve, reject) => {
+		new Promise((resolve) => {
 			fetch(WIKI_url)
-				.then((result: any) => {
-					return result.json();
+				.then((response: any) => {
+					return response.json();
 				})
-				.then((result: any) => {
-					resolve(result);
+				.then((response: any) => {
+					resolve(response)
 				});
 		}),
 	]);
