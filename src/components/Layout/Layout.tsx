@@ -34,8 +34,7 @@ const Layout = () => {
 
 	const updateTitles = (op: number, name: string, responseLength: number) => {
 		setSpinnerVisibility(false);
-		if (responseLength === 0) setSearchTitleText('No movies found');
-		else if (op === operation.SEARCH) setSearchTitleText(`Search result for ${name}`);
+		if (op === operation.SEARCH) setSearchTitleText(`Search result for ${name}`);
 		else if (op === operation.SIMILAR) setSearchTitleText(`Similar movies like ${name}`);
 		else setSearchTitleText('Trending movies');
 	};
@@ -51,7 +50,7 @@ const Layout = () => {
 
 			<h1 className="layout__title">{searchTitleText}</h1>
 
-			{}
+			{!movies.length && 'No movies found'}
 
 			<MovieDisplay movies={movies} getMovie={getMovie} />
 
