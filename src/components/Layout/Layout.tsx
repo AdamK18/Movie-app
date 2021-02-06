@@ -50,7 +50,7 @@ const Layout = () => {
 
 			<h1 className="layout__title">{searchTitleText}</h1>
 
-			{!movies.length && 'No movies found'}
+			{!movies.length && !spinnerVisibility && 'No movies found'}
 
 			<MovieDisplay movies={movies} getMovie={getMovie} />
 
