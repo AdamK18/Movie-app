@@ -35,7 +35,7 @@ const Layout = () => {
 	const updateTitles = (op: number, name: string, responseLength: number) => {
 		setSpinnerVisibility(false);
 		if (op === operation.SEARCH) setSearchTitleText(`Search result for ${name}`);
-		else if (op === operation.SIMILAR) setSearchTitleText(`Similar movies like ${name}`);
+		else if (op === operation.SIMILAR) setSearchTitleText(`Similar movies to ${name}`);
 		else setSearchTitleText('Trending movies');
 	};
 

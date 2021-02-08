@@ -9,7 +9,7 @@ export enum operation {
 }
 
 export const operationPicker = async (op: number, input: string) => {
-	const readableInput = input.replaceAll(' ', '_').trim();
+	const readableInput = input.replace(/ /g,'');
 	switch (op) {
 		case operation.TRENDING: {
 			return fetchTrending();
