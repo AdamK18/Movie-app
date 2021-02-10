@@ -9,16 +9,15 @@ export enum operation {
 }
 
 export const operationPicker = async (op: number, input: string) => {
-	const readableInput = input.replace(/ /g,'');
 	switch (op) {
 		case operation.TRENDING: {
 			return fetchTrending();
 		}
 		case operation.SEARCH: {
-			return fetchSearch(readableInput);
+			return fetchSearch(input);
 		}
 		default: {
-			return fetchSimilar(readableInput);
+			return fetchSimilar(input);
 		}
 	}
 };
